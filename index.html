@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Display-object by mateoconfeugo</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Display-object</h1>
+        <p>browser application components using clojure and clojurescript</p>
+
+        <p class="view"><a href="https://github.com/mateoconfeugo/display-object">View the Project on GitHub <small>mateoconfeugo/display-object</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/mateoconfeugo/display-object/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/mateoconfeugo/display-object/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/mateoconfeugo/display-object">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>A flexible way at building high performances graphical user interface composible components for responsive single page web appications</p>
+
+<p>Seperate out the different aspects that are complected</p>
+
+<ul>
+<li>asynchronous event Handling</li>
+<li>callback delegation</li>
+<li>wiring application functionality to application behaviour</li>
+<li>HTML DOM manipulation</li>
+<li>CSS Style</li>
+<li>Content Managed data insertion into the dom</li>
+<li>Communication with the Server</li>
+<li>Commnincation with other Display Objects</li>
+<li>Interactive Development Environment</li>
+<li>Server and Client Workflows</li>
+<li>Isolating Display Object state and the manipulation of it</li>
+<li>Display Object Editors</li>
+</ul><p>Display Objects are declared according to a schema describing the combination of Clojure/ClojureScript code and media resources that will be consumed by
+a constructor reifying the DisplayObject Protocol.</p>
+
+<p>Display Objects can be created with the following environments</p>
+
+<ul>
+<li>clojure on the server side for the jvm</li>
+<li>clojurescript on the client for the browser</li>
+<li>clojurescript on the server side for nodejs</li>
+</ul><p>Display Objects are combination of:</p>
+
+<ul>
+<li>sample/current html</li>
+<li>samle/current css</li>
+<li>dom element channels</li>
+<li>channel handler functions</li>
+<li>enliven/enfocus transforms/snippet</li>
+<li>view model data channel - input stream</li>
+<li>html - output stream</li>
+<li>cms - managed content input stream</li>
+<li>target host element</li>
+</ul><p>Display objects are defind declaratively in a edn file.</p>
+
+<p>During normal application runtime the principle channels used are the input data stream, the output data stream
+and the dom event channels that display object has connected.</p>
+
+<p>When a display object is being created or edited the css, html, cms are being used.  These channels when written to will change each the cms and html wondering if we can use a persistant queue or something like that to make undo and redo easy.  When the changes need to be saved/persisted on the server side,  The editor/layout manager can update the server which is updating edn files for the particular display object.</p>
+
+<p>New display objects can be created from existing display objects.  Template html is simple inserted in the right spot and written to the html channel, same for css</p>
+
+<p>Display objects get bound to their host element by the layout manager.</p>
+
+<ul>
+<li>When the data channel receives data via push, event, pull whatever
+** Data read from channel land given to the snippet function which returns the new html
+** the html is inserted into the target host element</li>
+</ul><p>layout manager consumes the html output channels and directs it to the correct set of target host elements
+display objects sample html could be edited in place</p>
+
+<p>the same could be said for the css</p>
+
+<p>handler function editing on line can be accomplished by integrating kimera.</p>
+
+<p>the layout manager has a map that connects the target host elements to the html output channels of the display objects.
+The layout manager can be used to edit, add and remove display objects.
+Operations that make sense.</p>
+
+<p>(render-display-objects )
+(route-html-to-host )
+(route-html-to-hosts )
+(add-display-object  )
+(remove-display-object  )
+(list-display-objects  )
+(add-filter/transform )
+(remove-filter/transform )</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/mateoconfeugo">mateoconfeugo</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
