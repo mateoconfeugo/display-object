@@ -1,0 +1,24 @@
+{
+ ;; Core config
+ ;; -----------
+ :site-builder-port 8080
+ ;; Sessions and Cookies
+ ;; --------------------
+ :cookie-name "gusto"
+ :session-key "s0mes3cret"
+ :session-max-age-seconds 1209600
+ ;; management rdbms
+ :mgmt-db-host "localhost"
+ :mgmt-db-port 3306
+ :mgmt-db-name "test_mgmt"
+ :mgmt-db-user "root"
+ :mgmt-db-password "test123"
+ ;; Authoring Database
+ ;; --------------------
+ :db-host "http://localhost"
+ :db-port 5984
+ :db-name-prefix "site-builder"
+ :api-key nil
+ :api-password nil
+}
+

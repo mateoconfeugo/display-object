@@ -1,3 +1,22 @@
+A flexible way at building high performances graphical user interface composible components for responsive single page web appications
+
+Seperate out the different aspects that are complected
+* asynchronous event Handling
+* callback delegation
+* wiring application functionality to application behaviour
+* HTML DOM manipulation
+* CSS Style
+* Content Managed data insertion into the dom
+* Communication with the Server
+* Commnincation with other Display Objects
+* Interactive Development Environment
+* Server and Client Workflows
+* Isolating Display Object state and the manipulation of it
+* Display Object Editors
+
+Display Objects are declared according to a schema describing the combination of Clojure/ClojureScript code and media resources that will be consumed by
+a constructor reifying the DisplayObject Protocol.
+
 Display Objects can be created with the following environments
 * clojure on the server side for the jvm
 * clojurescript on the client for the browser
@@ -27,10 +46,6 @@ Display objects get bound to their host element by the layout manager.
 * When the data channel receives data via push, event, pull whatever
 ** Data read from channel land given to the snippet function which returns the new html
 ** the html is inserted into the target host element
-
-might be nice to have
-* html input channel
-* html output channel
 
 layout manager consumes the html output channels and directs it to the correct set of target host elements
 display objects sample html could be edited in place
