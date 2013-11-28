@@ -9,8 +9,7 @@
             [goog.Uri]
             [jayq.core :as jq :refer [$ text val on prevent]])
   (:require-macros
-    [cljs.core.async.macros  :refer [go alt!]]
-    [display-object.crossover.macros :refer [go-loop]]))
+    [cljs.core.async.macros  :refer [go alt! go-loop]]))
 
 ;===============================================================================
 ; cljs utils
@@ -182,17 +181,8 @@
 (defn map-chan
   ([f source] (map-chan (chan) f source))
   ([c f source]
-    (fcm/go-loop
+    (go-loop
       (>! c (f (<! source))))
-    c))
-
-(defn filter-chan
-  ([f source] (filter-chan (chan) f source))
-  ([c f source]
-    (fcm/go-loop
-      (let [v (<! source)]
-        (when (f v)
-          (>! c v))))
     c))
 
 (defn jsonp-chan
@@ -209,10 +199,10 @@
     (interval-chan (chan (dropping-buffer 1)) msecs type))
   ([c msecs type]
     (condp = type
-      :leading (fcm/go-loop
+      :leading (go-loop
                  (>! c (now))
                  (<! (timeout msecs)))
-      :falling (fcm/go-loop
+      :falling (go-loop
                  (<! (timeout msecs))
                  (>! c (now))))
     c))
@@ -300,7 +290,7 @@
 
 (defn observable [c]
   (let [listeners (atom #{})]
-    (fcm/go-loop
+    (go-loop
       (put-all! @listeners (<! c)))
     (reify
       proto/ReadPort
