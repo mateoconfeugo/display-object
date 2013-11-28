@@ -4,7 +4,7 @@
             [compojure.route :as c-route]
             [net.cgrand.enlive-html :refer [deftemplate] :as html]
             [shoreleave.middleware.rpc :refer [remote-ns]]
-            [display-object.site :as cont-site :refer [test-shoreleave]]
+;;            [display-object.site :as cont-site ]
             [display-object.api]
             [display-object.editor :refer [editor site-builder]]))
 

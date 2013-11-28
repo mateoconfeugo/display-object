@@ -12,7 +12,6 @@
             [shoreleave.common :as common]
             [shoreleave.browser.history :as history]))
 
-
 (defn ^:export new-error-channel
   [{:keys [] :as args}]
   (chan))

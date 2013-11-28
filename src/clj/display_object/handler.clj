@@ -40,4 +40,5 @@
 
 (def app all-routes)
 
-(def war-handler  (get-handler app (get-default-config)))
+;;(def war-handler  (get-handler app (clojure.edn/read-string (format "%s/%s" (System/getProperty "user.dir") "resources/config.edn"))))
+(def war-handler  (get-handler app {}))
