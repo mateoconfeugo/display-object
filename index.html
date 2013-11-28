@@ -28,19 +28,21 @@
         </ul>
       </header>
       <section>
-        <p>A flexible way at building high performances graphical user interface composible components for responsive single page web appications</p>
+        <p>A flexible way at building high performances graphical user interface composeable components for responsive single page web applications</p>
 
-<p>Seperate out the different aspects that are complected</p>
+<p><a href="http://display-object.herokuapp.com/display-object/editor">Heroku Hosted Demo</a></p>
+
+<p>Separate out the different aspects that are complected</p>
 
 <ul>
 <li>asynchronous event Handling</li>
 <li>callback delegation</li>
-<li>wiring application functionality to application behaviour</li>
+<li>wiring application functionality to application behavior</li>
 <li>HTML DOM manipulation</li>
 <li>CSS Style</li>
-<li>Content Managed data insertion into the dom</li>
+<li>Content Managed data insertion into the DOM</li>
 <li>Communication with the Server</li>
-<li>Commnincation with other Display Objects</li>
+<li>Communication with other Display Objects</li>
 <li>Interactive Development Environment</li>
 <li>Server and Client Workflows</li>
 <li>Isolating Display Object state and the manipulation of it</li>
@@ -58,7 +60,7 @@ a constructor reifying the DisplayObject Protocol.</p>
 
 <ul>
 <li>sample/current html</li>
-<li>samle/current css</li>
+<li>sample/current css</li>
 <li>dom element channels</li>
 <li>channel handler functions</li>
 <li>enliven/enfocus transforms/snippet</li>
@@ -66,12 +68,12 @@ a constructor reifying the DisplayObject Protocol.</p>
 <li>html - output stream</li>
 <li>cms - managed content input stream</li>
 <li>target host element</li>
-</ul><p>Display objects are defind declaratively in a edn file.</p>
+</ul><p>Display objects are defined declaratively in a edn file.</p>
 
 <p>During normal application runtime the principle channels used are the input data stream, the output data stream
 and the dom event channels that display object has connected.</p>
 
-<p>When a display object is being created or edited the css, html, cms are being used.  These channels when written to will change each the cms and html wondering if we can use a persistant queue or something like that to make undo and redo easy.  When the changes need to be saved/persisted on the server side,  The editor/layout manager can update the server which is updating edn files for the particular display object.</p>
+<p>When a display object is being created or edited the css, html, cms are being used.  These channels when written to will change each the cms and html wondering if we can use a persistent  queue or something like that to make undo and redo easy.  When the changes need to be saved/persisted on the server side,  The editor/layout manager can update the server which is updating edn files for the particular display object.</p>
 
 <p>New display objects can be created from existing display objects.  Template html is simple inserted in the right spot and written to the html channel, same for css</p>
 
