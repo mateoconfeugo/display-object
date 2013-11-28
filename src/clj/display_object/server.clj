@@ -3,8 +3,8 @@
   (:refer-clojure :exclude [read-string]) ; suppress the shadowing warning
   (:require [clojure.core :as core]
             [clojure.edn :as edn :refer [read-string]]
-            [site-builder-udc.config :refer [get-default-config]]
-            [site-builder-udc.handler :as handler]
+            [display-object.config :refer [get-default-config]]
+            [display-object.handler :as handler]
             [ring.server.standalone :as ring-server])
   (:gen-class))
 

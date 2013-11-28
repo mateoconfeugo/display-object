@@ -1,7 +1,7 @@
 (defproject display-object "0.1.0"
   :description "Display Object and Editor"
 
-  :url "http://example.com/FIXME"
+  :url "http://mateoconfeugo.github.io/display-object/"
 
   :license {:name "Eclipse Public License"  :url "http://www.eclipse.org/legal/epl-v10.html"}
 
@@ -10,6 +10,13 @@
          :destroy display-object.handler/destroy}
 
   :main display-object.server
+
+  :uberjar-name "display-object-standalone.jar"
+
+  :heroku {
+           :app-name "display-object"
+           :app-url "http://display-object.herokuapp.com"
+           }
 
   :jvm-opts ["-Djava.security.policy=heroku.policy" "-Xmx80M"]
 
@@ -51,10 +58,11 @@
   :plugins [[lein-cljsbuild "0.3.3"] ; handle the clojurescript to javascript compilation process
             [lein-garden "0.1.0"] ; Build the css resources as the src code affecting them changes
             [lein-marginalia "0.7.1"] ; Literate programing
+            [lein-heroku-deploy "0.1.0"] ; Deploy to Heroku
             [lein-test-out "0.3.0"] ; Output the test results in junit format
             [lein-git-deps "0.0.1-SNAPSHOT"] ; Use git repositories as clojure component repo
             [com.cemerick/clojurescript.test "0.2.1"] ; clojurescript test framework
-            [lein-ring "0.8.5"] ; perform webserver operations with lien
+            [lein-ring "0.8.5"] ; perform webserver operations with lein
             [lein-localrepo "0.4.1"] ; use local jar repo
             [s3-wagon-private "1.1.2"] ; use Amazon s3 bitbucket as private jar repo
             [lein-expectations "0.0.8"] ; Run the expectations framework
@@ -79,9 +87,6 @@
                    :rules :cljs}]}
 
   :cljsbuild {
-              :crossovers [display-object.crossover]
-              :crossover-path "src/cljs/crossover-cljs"
-              :crossover-jar true
               :repl-listen-port 9000
               :repl-launch-commands
               ;; $ lein trampoline cljsbuild repl-launch firefox <URL>
@@ -100,7 +105,6 @@
                        :dev
                        {:source-paths ["src/cljs"]
                         ;;                        :externs ["public/js/layout_manager.js"]
-                        :jar true
                         :compiler {:output-to "resources/public/js/main-debug.js"
                                    :optimizations :whitespace
                                    :pretty-print true}}
