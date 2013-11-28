@@ -14,8 +14,8 @@
   :uberjar-name "display-object-standalone.jar"
 
   :heroku {
-           :app-name "display-object-host"
-           :app-url "http://display-object-host.herokuapp.com"
+           :app-name "display-object"
+           :app-url "http://display-object.herokuapp.com"
            }
 
   :jvm-opts ["-Djava.security.policy=heroku.policy" "-Xmx80M"]
