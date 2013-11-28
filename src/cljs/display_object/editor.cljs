@@ -10,6 +10,7 @@
             [jayq.core :as jq :refer [$ on prevent]]
             [dommy.utils :as utils]
             [dommy.core :as dommy]
+            [enfocus.core :refer [at html-content]]
             [jayq.core :refer [$ text val on prevent remove-class add-class remove empty html children append]]
             [shoreleave.browser.storage.sessionstorage :refer [storage]]
             [shoreleave.remote]))

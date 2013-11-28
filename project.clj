@@ -13,6 +13,11 @@
 
   :uberjar-name "display-object-standalone.jar"
 
+  :heroku {
+           :app-name "display-object-host"
+           :app-url "http://display-object-host.herokuapp.com"
+           }
+
   :jvm-opts ["-Djava.security.policy=heroku.policy" "-Xmx80M"]
 
   :min-lein-version "2.0.0"
@@ -82,9 +87,6 @@
                    :rules :cljs}]}
 
   :cljsbuild {
-              :crossovers [display-object.crossover]
-              :crossover-path "src/cljs/crossover-cljs"
-              :crossover-jar true
               :repl-listen-port 9000
               :repl-launch-commands
               ;; $ lein trampoline cljsbuild repl-launch firefox <URL>
@@ -103,7 +105,6 @@
                        :dev
                        {:source-paths ["src/cljs"]
                         ;;                        :externs ["public/js/layout_manager.js"]
-                        :jar true
                         :compiler {:output-to "resources/public/js/main-debug.js"
                                    :optimizations :whitespace
                                    :pretty-print true}}
