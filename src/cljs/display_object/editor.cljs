@@ -4,13 +4,18 @@
   (:use-macros [dommy.macros :only [node sel sel1 deftemplate]])
   (:require-macros [cljs.core.match.macros :refer [match]]
                    [cljs.core.async.macros  :refer [go]]
-                   [shoreleave.remotes.macros :as srm :refer [rpc]])
+                   [jayq.macros :refer [ready]]
+                   [shoreleave.remotes.macros :as srm :refer [rpc]]
+                   [enfocus.macros :as em])
   (:require [cljs.core.async :refer [alts! chan >! >! put!]]
             [cljs.core.async.impl.ioc-helpers ]
             [jayq.core :as jq :refer [$ on prevent]]
             [dommy.utils :as utils]
             [dommy.core :as dommy]
-            [enfocus.core :refer [at html-content]]
+            [enfocus.core :as ef :refer [at html-content]]
+            [enfocus.effects :as effects]
+            [enfocus.events :as ev]
+            [goog.dom :as dom]
             [jayq.core :refer [$ text val on prevent remove-class add-class remove empty html children append]]
             [shoreleave.browser.storage.sessionstorage :refer [storage]]
             [shoreleave.remote]))
@@ -78,33 +83,35 @@
       (add-class ($ elm) "demo")
       (html ($ elm) (or (:tmp-page-html model) (:page-html model)))))
 
-(defn dispatch
-  [ch val & session]
-  "Dispatch table that routes channel event data to the correct handler
-   val is a vector with a keyword to be dispatched on and the value from the
-   channel"
-  (match [(nth val 0)]
-         [:save-site]  (save-site {:page-html (html ($ ".demo"))
-                                   :user-id (:user-id session)
-                                   :site-id (:site-id session)
-                                   :drop-channel ch})
-         [:drop-snippet] (update-site (assoc (nth val 1) :drop-channel ch))
-         [:site-updated] (render-workspace ch (nth val 1) ($ ".demo"))))
-
-(defn render [selector]
-  (let [_ (.log js/console (str "selector:  ") selector)
-        output-html (tmpl/html-editor {})
-        _ (.log js/console (str "output:  ") output-html)]
-    (at js/document selector (html-content output-html))))
+(em/deftemplate html-editor :compiled  "templates/html-editor.html" [])
 
 (defn new-editor
-  "Create the event channels and start the loop that feeds the event data to the dispatcher"
-  [selector]
-  (let [app-html (render selector)
-        save-channel (click-chan "#save-site" :save-site)
+  "Create the event channels and start the loop that feeds the event data dispatch table
+   that routes channel event data to the correct handler val is a vector witha keyword
+   to be dispatched on and the value from the channel"
+  [selector session]
+  (let [save-channel (click-chan "#save-site" :save-site)
         drop-channel (drop-channel ".demo" :drop-snippet extract-tuple)
-        channels [save-channel drop-channel]
-        ]
+        input-channel (chan)
+        dispatch-fn (fn [ch val session]
+                      (match [(nth val 0)]
+                             [:save-site] (save-site {:page-html (html ($ ".demo"))
+                                                      :user-id (:user-id session)
+                                                      :site-id (:site-id session)
+                                                      :drop-channel ch})
+                             [:html-in] (at js/document (nth val 1) (html-content (html-editor )))
+                             [:drop-snippet] (update-site (assoc (nth val 1) :drop-channel ch))
+                             [:site-updated] (render-workspace ch (nth val 1) ($ ".demo"))))
+        channels [save-channel drop-channel input-channel]]
     (go (while true
           (let [[val ch] (alts! channels)]
-            (dispatch ch val))))))
+            (dispatch-fn ch val session))))
+    input-channel))
+
+
+(defn start-editor []
+  (let [_ (.log js/console "creating a new display object editor")
+        html-in (new-editor "#display-object-editor" {})
+        _ (put! html-in [:html-in "#display-object-editor"])]))
+
+(ready (start-editor))

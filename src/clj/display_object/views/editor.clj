@@ -1,4 +1,4 @@
-(ns display-object.editor
+(ns display-object.views.editor
   (:require [net.cgrand.enlive-html :refer [deftemplate defsnippet content html-content]]))
 
 (def ^:dynamic *top-navbar-sel* [:div.navbar.navbar-inverse.navbar-fixed-top :div.navbar-inner])

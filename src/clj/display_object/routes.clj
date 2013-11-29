@@ -1,24 +1,22 @@
 (ns display-object.routes
-  (:require [compojure.core :as c-core :refer [defroutes GET POST PUT DELETE
-                                               HEAD OPTIONS PATCH ANY]]
-            [compojure.route :as c-route]
-            [net.cgrand.enlive-html :refer [deftemplate] :as html]
+  (:require [compojure.core :as c-core :refer [defroutes  routes GET]]
+            [compojure.route :refer [resources not-found]]
+            [net.cgrand.enlive-html :as html :refer [deftemplate] ]
             [shoreleave.middleware.rpc :refer [remote-ns]]
-;;            [display-object.site :as cont-site ]
-            [display-object.api]
-            [display-object.editor :refer [editor site-builder]]))
+            [display-object.controllers.api]
+            [display-object.views.editor :refer [editor]]
+            [display-object.views.site :refer [about-display-object]]))
 
-;; Remote APIs exposed
-(remote-ns 'display-object.api :as "api")
+(remote-ns 'display-object.controllers.api :as "api")
 
 (defroutes site-pages
-  (GET "/site-builder" [] (site-builder))
+  (GET "/about" [] (about-display-object))
   (GET "/editor" [] (editor {})))
 
 (defroutes app-routes
-  (c-route/resources "/")
-  (c-route/resources "/templates/" {:root "/templates"})
-  (c-route/resources "/design/" {:root "templates"})
-  (c-route/not-found "404 Page not found."))
+  (resources "/")
+  (resources "/templates/" {:root "/templates"})
+  (resources "/design/" {:root "templates"})
+  (not-found "404 Page not found."))
 
-(def all-routes (c-core/routes site-pages app-routes))
+(def all-routes (routes site-pages app-routes))
