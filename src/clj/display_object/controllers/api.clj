@@ -1,4 +1,4 @@
-(ns display-object.api
+(ns display-object.controllers.api
   ^{:author "Matthew Burns"
     :doc "API controller for display object"}
   (:require [taoensso.timbre :refer [info]]
