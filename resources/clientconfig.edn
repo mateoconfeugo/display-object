@@ -1,0 +1,6 @@
+{:display-objects [{:name "ham"
+                    :host-element "#ham"
+                    :template "ham.html"
+                    :websocket-url nil
+                    :snippet-fn 'ham}]
+}

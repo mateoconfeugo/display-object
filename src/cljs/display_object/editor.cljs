@@ -16,6 +16,7 @@
             [enfocus.effects :as effects]
             [enfocus.events :as ev]
             [goog.dom :as dom]
+;;            [himera.client.repl]
             [jayq.core :refer [$ text val on prevent remove-class add-class remove empty html children append]]
             [shoreleave.browser.storage.sessionstorage :refer [storage]]
             [shoreleave.remote]))
@@ -99,8 +100,8 @@
                                                       :user-id (:user-id session)
                                                       :site-id (:site-id session)
                                                       :drop-channel ch})
-                             [:html-in] (at js/document (nth val 1) (html-content (html-editor )))
-                             [:drop-snippet] (update-site (assoc (nth val 1) :drop-channel ch))
+                             [:html-in] (at (nth val 1) (html-content (html-editor )))
+                             [:drop-snippet] (update-site (assoc (nth val 1) :drop-channel chr))
                              [:site-updated] (render-workspace ch (nth val 1) ($ ".demo"))))
         channels [save-channel drop-channel input-channel]]
     (go (while true
@@ -112,6 +113,8 @@
 (defn start-editor []
   (let [_ (.log js/console "creating a new display object editor")
         html-in (new-editor "#display-object-editor" {})
-        _ (put! html-in [:html-in "#display-object-editor"])]))
+        _ (put! html-in [:html-in "#display-object-editor"])]
+;;    (himera.client.repl/go)
+    ))
 
 (ready (start-editor))

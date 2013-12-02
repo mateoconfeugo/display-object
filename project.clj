@@ -44,7 +44,7 @@
                  [amalloy/ring-gzip-middleware "0.1.3" :exclusions [org.clojure/clojure]]
                  [org.clojure/clojurescript "0.0-2080"]
   ;;               [tryclojure "0.1.0-SNAPSHOT"]
-                 [himera "0.1.0-SNAPSHOT"]
+;;                 [himera "0.1.0-SNAPSHOT"]
                  [ring "1.2.1"]
                  [ring-anti-forgery "0.3.0"]
                  [ring-server "0.3.1" :exclusions [[org.clojure/clojure] [ring]]]
