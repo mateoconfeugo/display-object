@@ -13,12 +13,6 @@
             [shoreleave.common :as common]
             [shoreleave.browser.history :as history]))
 
-(def test-cfg {:name "ham"
-               :host-element "#ham"
-               :template "ham.html"
-               :websocket-url nil
-               :snippet-fn 'ham})
-
 (defprotocol DisplayObject
   (render [this] "Populate occupied DOM")
   (get-channels [this] "Get the i/o channels that govern operation of the display object"))

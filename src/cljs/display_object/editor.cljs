@@ -1,7 +1,6 @@
 (ns display-object.editor
   ^{:author "Matthew Burns"
     :doc "Display Object Editor containing the functionality build a web site from a set of nested display objects"}
-  (:use-macros [dommy.macros :only [node sel sel1 deftemplate]])
   (:require-macros [cljs.core.match.macros :refer [match]]
                    [cljs.core.async.macros  :refer [go]]
                    [jayq.macros :refer [ready]]
@@ -9,9 +8,9 @@
                    [enfocus.macros :as em])
   (:require [cljs.core.async :refer [alts! chan >! >! put!]]
             [cljs.core.async.impl.ioc-helpers ]
+            [display-object.protocols :refer [render get-channels DisplayObject]]
+            [display-object.helpers :refer [click-chan data-from-event]]
             [jayq.core :as jq :refer [$ on prevent]]
-            [dommy.utils :as utils]
-            [dommy.core :as dommy]
             [enfocus.core :as ef :refer [at html-content]]
             [enfocus.effects :as effects]
             [enfocus.events :as ev]
@@ -20,22 +19,6 @@
             [jayq.core :refer [$ text val on prevent remove-class add-class remove empty html children append]]
             [shoreleave.browser.storage.sessionstorage :refer [storage]]
             [shoreleave.remote]))
-
-(defn data-from-event
-  "Transforms a js event into a proper clojure map"
-  [event]
-  (-> event .-currentTarget $ .data (js->clj :keywordize-keys true)))
-
-(defn click-chan
-  "Creates a chan the when event is raised puts the event data with the correct routing message into
-   the channel that is returned upon creation"
-  [selector msg-name]
-  (let [rc (chan)]
-    (jq/on (jq/$ "body") :click selector {}
-           (fn [e]
-             (jq/prevent e)
-             (put! rc [msg-name (data-from-event e)])))
-    rc))
 
 (defn extract-tuple
   [event ui]
@@ -91,30 +74,38 @@
    that routes channel event data to the correct handler val is a vector witha keyword
    to be dispatched on and the value from the channel"
   [selector session]
-  (let [save-channel (click-chan "#save-site" :save-site)
-        drop-channel (drop-channel ".demo" :drop-snippet extract-tuple)
-        input-channel (chan)
+  (let [host-element ($ selector)
+        dom-html (html-editor)
+        channels {:html-input (chan)
+                  :save-channel (click-chan "#save-site" :save-site)
+                  :drop-channel (drop-channel ".demo" :drop-snippet extract-tuple)
+                  :input-channel (chan)}
+        bus (into [] (vals channels))
         dispatch-fn (fn [ch val session]
                       (match [(nth val 0)]
                              [:save-site] (save-site {:page-html (html ($ ".demo"))
                                                       :user-id (:user-id session)
                                                       :site-id (:site-id session)
                                                       :drop-channel ch})
-                             [:html-in] (at (nth val 1) (html-content (html-editor )))
-                             [:drop-snippet] (update-site (assoc (nth val 1) :drop-channel chr))
+                             [:html-in] (at host-element (html-content (nth val 1)))
+                             ;;                                                          [:html-in] (.log js/console (nth val 1))
+                             ;;                                                                                       [:html-in] (.log js/console host-element)
+                             [:drop-snippet] (update-site (assoc (nth val 1) :drop-channel (:drop-channel channels)))
                              [:site-updated] (render-workspace ch (nth val 1) ($ ".demo"))))
-        channels [save-channel drop-channel input-channel]]
-    (go (while true
-          (let [[val ch] (alts! channels)]
-            (dispatch-fn ch val session))))
-    input-channel))
-
+        _ (go (while true
+              (let [[val ch] (alts! bus)]
+                (dispatch-fn ch val session))))]
+    (reify DisplayObject
+      (render [this]
+        (put! (:html-input channels) [:html-in "<div>bingo</div>"]))
+      (get-channels [this]
+        channels))))
 
 (defn start-editor []
   (let [_ (.log js/console "creating a new display object editor")
-        html-in (new-editor "#display-object-editor" {})
-        _ (put! html-in [:html-in "#display-object-editor"])]
-;;    (himera.client.repl/go)
-    ))
+        disp-obj (new-editor "#display-object-editor" {})]
+    (do (render disp-obj)
+        (.log js/console disp-obj))
+    disp-obj))
 
-(ready (start-editor))
+(def site-editor (start-editor))

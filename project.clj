@@ -29,11 +29,10 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/core.async "0.1.242.0-44b1e3-alpha"]
                  [org.clojure/core.match "0.2.0"]
-                 [ring "1.2.1"] ; Webserver framework
                  [compojure "1.1.6"] ; Web routing https://github.com/weavejester/compojure
                  [domina "1.0.2"]
-                 [prismatic/dommy "0.1.1"]
-                 [enlive "1.1.4"] ; serverside DOM manipulating
+                 [prismatic/dommy "0.1.2"]
+                 [enlive "1.1.5"] ; serverside DOM manipulating
                  [enfocus "2.0.2"] ; client DOM manipulating
                  [jayq "2.5.0"] ; clojurescript jquery wrapper
                  [garden "1.1.4"] ; server side css rendering library
@@ -43,8 +42,9 @@
                  [ring-clj-params "0.1.0"]
                  [amalloy/ring-gzip-middleware "0.1.3" :exclusions [org.clojure/clojure]]
                  [org.clojure/clojurescript "0.0-2080"]
-  ;;               [tryclojure "0.1.0-SNAPSHOT"]
-;;                 [himera "0.1.0-SNAPSHOT"]
+                 [org.clojure/data.json "0.2.3"]
+                 ;;               [tryclojure "0.1.0-SNAPSHOT"]
+;;                 [com.mateoconfeugo.himera "0.1.0"]
                  [ring "1.2.1"]
                  [ring-anti-forgery "0.3.0"]
                  [ring-server "0.3.1" :exclusions [[org.clojure/clojure] [ring]]]
@@ -104,17 +104,16 @@
               :builds {
                        :dev
                        {:source-paths ["src/cljs"]
-                        ;;                        :externs ["public/js/layout_manager.js"]
                         :compiler {:output-to "resources/public/js/main-debug.js"
+                                   :output-dir "resources/public/js/"
                                    :optimizations :whitespace
                                    :pretty-print true}}
                        :prod
                        {:source-paths ["src/cljs"]
-                        ;;                        :externs ["public/js/layout_manager.js"]
                         :compiler {:output-to "resources/public/js/main.js"
+;;                                   :output-dir "resources/public/js/"
                                    :optimizations :advanced
-                                   :pretty-print false
-;;                                   :source-map "resources/public/js/main.js.map"
+                                   :pretty-print true
                                    }}
                        :test
                        {:source-paths ["test-cljs"]

@@ -1,11 +1,12 @@
 (ns display-object.routes
-  (:require [compojure.core :as c-core :refer [defroutes  routes GET]]
+  (:require [compojure.core :refer [defroutes  routes context GET]]
             [compojure.route :refer [resources not-found ]]
             [net.cgrand.enlive-html :as html :refer [deftemplate] ]
             [ring.util.response :refer [file-response content-type]]
             [shoreleave.middleware.rpc :refer [remote-ns]]
             [display-object.controllers.api]
             [display-object.views.editor :refer [editor]]
+            [himera.server.service :refer [app]]
             [display-object.views.site :refer [about-display-object]]))
 
 (remote-ns 'display-object.controllers.api :as "api")
@@ -15,6 +16,7 @@
   (GET "/editor" [] (editor {})))
 
 (defroutes app-routes
+  (context "/himera" [] app)
   (resources "/")
 ;;  (GET "/clientconfig" [] (content-type (file-response "clientconfig.edn")   "application/edn"))
   (resources "/templates/" {:root "/templates"})

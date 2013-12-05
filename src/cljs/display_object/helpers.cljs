@@ -50,17 +50,20 @@
                        (take 3 (drop 15 r)) ["-"]
                                               (take 12 (drop 18 r))))))
 
-
-(defn data-from-event [event]  (-> event .-currentTarget jq/$ .data (js->clj :keywordize-keys true)))
+(defn data-from-event
+  "access the event data as keyword map"
+  [event]
+  (-> event .-currentTarget jq/$ .data (js->clj :keywordize-keys true)))
 
 (defn click-chan [selector msg-name]
+  "Creates a chan the when event is raised puts the event data with the correct
+   routing message into the channel that is returned upon creation"
   (let [rc (chan)]
     (jq/on (jq/$ "body") :click selector {}
         (fn [e]
           (jq/prevent e)
           (put! rc [msg-name (data-from-event e)])))
     rc))
-
 
 (defn listen
   ([el type] (listen el type nil))
