@@ -58,6 +58,7 @@ the layout manager has a map that connects the target host elements to the html 
 The layout manager can be used to edit, add and remove display objects.
 Operations that make sense.
 
+```clojure
 (render-display-objects )
 (route-html-to-host )
 (route-html-to-hosts )
@@ -66,3 +67,4 @@ Operations that make sense.
 (list-display-objects  )
 (add-filter/transform )
 (remove-filter/transform )
+```
